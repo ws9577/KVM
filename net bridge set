@@ -1,0 +1,42 @@
+virsh net-list
+virsh list
+virsh list --all
+
+ps aux | grep -i dnsmasq
+/var/lib/libvirt/dnsmasq/default.conf
+virsh dumpxml XXX | grep -i 'network='
+
+virsh net-dhcp-leases default 
+
+route
+
+virsh net-destory default
+virsh shutdown XXXXXX
+
+ip link set eno1 down
+ip add del 192.168.0.100/16 dev eno1
+
+systemctl status NetworkManager
+# systend-networkd network automation
+# /etc/systemd/network
+systemctl status systend-networkd
+
+ip link add name br0 type bridge
+ip link set eno1 master br0
+
+ip addr add 192.168.0.100/16 dev br0 brd 192.168.255.255
+ip link set up eno1
+ip link set up br0
+
+arping 192.168.0.100 -I eth0
+
+route add default gw 192.168.0.100
+
+vim br.netdev
+[NetDev]
+Name=br0
+Kind=bridge
+
+
+
+
