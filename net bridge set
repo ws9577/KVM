@@ -37,6 +37,18 @@ vim br.netdev
 Name=br0
 Kind=bridge
 
+vim bind01.netdev
+[Match]
+Name=eno1
 
+[Network]
+Bridge=br0
+
+vim br0-dhcp.network
+[Match]
+Name=br0
+
+[Network]
+DHCP=ipv4
 
 
