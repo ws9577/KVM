@@ -1,0 +1,12 @@
+windows11 on QEMU
+
+https://sysguides.com/install-a-windows-11-virtual-machine-on-kvm
+
+virtio required
+
+No QCOW2
+Q35+ UEFI
+XML- enable hyperv
+
+fedora guy
+https://fedoramagazine.org/full-virtualization-system-on-fedora-workstation-30/
