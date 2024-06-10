@@ -72,11 +72,40 @@ DHCP=ipv4
 
 /etc/netplan #configure static IP
 
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    ens4p0:
+      addresses:
+        - 192.168.0.110/24
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+  bridges:
+    virbr0:
+      interfaces: [ens4p0]
+      dhcp4: no
+      addresses: []
+
 # dhcp=true
   addresses:
   -  192.168.122.110
   gateway4: 192.168.122.1
   NameServer:
     [192.268.0.1,8.8.8.8]
+
+# fluid ip
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  bridges:
+    virbr0:
+      interfaces: [ens4p0]
+      dhcp4: yes
+      addresses: []
+
 
 
