@@ -1,3 +1,49 @@
+# Bridge + VLAN
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp4s0:
+      dhcp4: true
+  bridges:
+    virbr0:
+      interfaces: [enp4s0.100]
+      dhcp4: false
+      addresses: []
+      parameters:
+        stp: true
+        forward-delay: 0
+      vlans:
+        vlan100:
+          id: 100
+  vlans:
+    enp4s0.100:
+      id: 100
+      link: enp4s0
+      addresses: []
+# In this configuration: A new VLAN interface vlan100 is added under the ivrbr0 bridge with an ID of 100.
+# The enp4s0.100 VLAN interface is still created and bound to the bridge virbr0.
+# This configuration allows the host to communicate with the virtual machines through VLAN 100 on the bridge interface br0,
+# while the host's physical Ethernet interface enp0s3 remains connected to the external LAN without any VLAN tagging.
+
+
+# old bridge
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    ens4p0:
+      addresses:
+        - 192.168.0.110/24
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+  bridges:
+    virbr0:
+      interfaces: [ens4p0]
+      dhcp4: no
+      addresses: []
+
 # claude method, vmx.xml
 <interface type='direct'>
   <source dev='enp4s0' mode='bridge'/>
@@ -72,22 +118,7 @@ DHCP=ipv4
 
 /etc/netplan #configure static IP
 
-# Let NetworkManager manage all devices on this system
-network:
-  version: 2
-  renderer: NetworkManager
-  ethernets:
-    ens4p0:
-      addresses:
-        - 192.168.0.110/24
-      gateway4: 192.168.0.1
-      nameservers:
-        addresses: [8.8.8.8, 8.8.4.4]
-  bridges:
-    virbr0:
-      interfaces: [ens4p0]
-      dhcp4: no
-      addresses: []
+
 
 # dhcp=true
   addresses:
