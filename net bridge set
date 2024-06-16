@@ -26,6 +26,29 @@ network:
 # This configuration allows the host to communicate with the virtual machines through VLAN 100 on the bridge interface br0,
 # while the host's physical Ethernet interface enp0s3 remains connected to the external LAN without any VLAN tagging.
 
+# option 2
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp4s0:
+      dhcp4: true
+  wifis:
+    wlo1:
+      dhcp4: true
+      access-points:
+        "YOUR_SSID":
+          password: "YOUR_WIFI_PASSWORD"
+  bridges:
+    virbr0:
+      interfaces: [enp4s0]
+      dhcp4: true
+      parameters:
+        stp: true
+        forward-delay: 4
+      routing-policy:
+        - from: 0.0.0.0/0
+          metric: 100
 
 # old bridge
 network:
