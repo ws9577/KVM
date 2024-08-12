@@ -1,3 +1,25 @@
+# the host and other hosts in the same LAN should be able to access to KVMs
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp4s0:
+      dhcp4: no  # Disable DHCP on the physical interface, as the bridge will handle IP allocation.
+  bridges:
+    br0:
+      interfaces: [enp4s0]
+      dhcp4: yes  # Enable DHCP on the bridge interface to get an IP for the host.
+      addresses:  # Optional static IPs for the host, if needed.
+        - 192.168.0.110/24
+        - 192.168.0.111/24
+      nameservers:
+        addresses: [192.168.0.1]
+      parameters:
+        stp: true  # Enable STP to avoid network loops.
+        forward-delay: 4
+
+
+
 # Bridge + VLAN
 network:
   version: 2
