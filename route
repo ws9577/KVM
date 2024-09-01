@@ -1,3 +1,51 @@
 # ststic ip
 
 virsh net-edit default
+
+# netplan dev
+# Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp4s0:
+      dhcp4: no
+  bridges:
+    br0:
+      interfaces: [enp4s0]
+      dhcp4: yes
+      addresses:
+        - 192.168.0.111/24
+      nameservers:
+        addresses: [192.168.0.1]
+      parameters:
+        stp: true
+        forward-delay: 4
+  wifis:
+    wlo1:
+      dhcp4: true
+      access-points:
+        "Wang's_5G":
+          password: "062890940"
+
+# netplan webserver
+network:
+  version: 2
+  renderer: networkd  
+  ethernets:
+    enp1s0:
+      dhcp4: no
+      addresses:
+        - 192.168.0.201/24 
+
+# alpine, /etc/network/interfaces 
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+        address 192.168.0.141/24
+        gateway 192.168.0.1
+
+
+
