@@ -19,6 +19,10 @@ network:
         forward-delay: 4
 
 
+sudo virsh net-destroy default   # This stops the network
+sudo virsh net-autostart --disable default   # This prevents it from starting at boot
+
+
 
 # Bridge + VLAN
 network:
