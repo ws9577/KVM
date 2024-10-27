@@ -1,7 +1,7 @@
-# the host and other hosts in the same LAN should be able to access to KVMs
+ip a# the host and other hosts in the same LAN should be able to access to KVMs
 network:
   version: 2
-  renderer: networkd
+  renderer: NetworkManager
   ethernets:
     enp4s0:
       dhcp4: no  # Disable DHCP on the physical interface, as the bridge will handle IP allocation.
@@ -34,7 +34,7 @@ sudo virsh edit <vm-name>
 # Bridge + VLAN
 network:
   version: 2
-  renderer: networkd
+  renderer: NetworkManager
   ethernets:
     enp4s0:
       dhcp4: true
