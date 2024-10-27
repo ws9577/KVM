@@ -1,0 +1,10 @@
+# Verify the Disk Section in XML: 
+# Open your XML configuration file (vm-config.xml) and check that the <disk> section is fully and correctly defined.
+# For a block device setup with an LVM volume, the <disk> section should look like this:
+
+<disk type='block' device='disk'>
+  <driver name='qemu' type='raw' cache='none' discard='unmap'/>
+  <source dev='/dev/ubuntu-vg/al1web200'/>
+  <target dev='vda' bus='virtio'/>
+  <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
+</disk>
