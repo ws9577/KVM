@@ -1,0 +1,37 @@
+# Step 1: Create a Large LVM Logical Volume as a Storage Pool
+# Create the LVM Volume: Decide on the size of the storage pool, then create a logical volume. For example, to create a 500GB LVM volume named vm-pool:
+sudo lvcreate -L 500G -n vm-pool ubuntu-vg
+
+# This will create an LVM logical volume at /dev/ubuntu-vg/vm-pool.
+# Format the Logical Volume with a Filesystem: Format the volume with a filesystem (e.g., ext4) to hold qcow2 images.
+sudo mkfs.ext4 /dev/ubuntu-vg/vm-pool
+
+# Mount the Storage Pool: Create a directory to mount this logical volume and mount it:
+sudo mkdir -p /var/lib/libvirt/images/vm-pool
+sudo mount /dev/ubuntu-vg/vm-pool /var/lib/libvirt/images/vm-pool
+
+# To make this mount persistent across reboots, add it to /etc/fstab:
+echo "/dev/ubuntu-vg/vm-pool /var/lib/libvirt/images/vm-pool ext4 defaults 0 0" | sudo tee -a /etc/fstab
+
+
+# Step 2: Configure the Pool in virt-manager
+# Create a New Storage Pool in virt-manager:
+        Open virt-manager.
+        Go to Edit > Connection Details > Storage.
+        Click + to add a new storage pool.
+        Name the pool (e.g., LVM_QCOW2_Pool) and set Type to dir.
+        For the Target Path, use the directory you created (/var/lib/libvirt/images/vm-pool).
+        Click Finish to create the storage pool.
+
+# Set Up Storage for Each VM Using qcow2:
+        When creating a new VM, select Custom Storage.
+        In the storage pool dropdown, select LVM_QCOW2_Pool.
+        Allocate a .qcow2 disk image with the desired initial size (e.g., 10GB for an initially small VM).
+        qcow2 files will automatically expand up to their maximum allocated size as needed.
+
+# Step 3: Verify and Start the VM
+
+    Confirm the configuration and finish creating the VM.
+    Start the VM from virt-manager.
+
+Each VM’s disk will be a .qcow2 image within the LVM-backed pool, allowing dynamic resizing. The LVM volume itself will only fill up as each VM uses its allocated space, making this approach space-efficient.
