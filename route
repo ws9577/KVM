@@ -28,7 +28,22 @@ network:
         "Wang's_5G":
           password: "062890940"
 
-# netplan webserver
+# ubuntu netplan 
+network:
+  version: 2
+  renderer: networkd  
+  ethernets:
+    enp1s0:
+      dhcp4: no
+      addresses:
+        - 192.168.0.201/24
+      routes:
+        - to: default
+          via: 192.168.0.1
+      nameservers:
+        addresses: [192.168.0.1]
+
+# other option:
 network:
   version: 2
   renderer: networkd  
@@ -46,6 +61,7 @@ auto eth0
 iface eth0 inet static
         address 192.168.0.141/24
         gateway 192.168.0.1
+        dns-nameservers 192.168.0.1
 
 
 
