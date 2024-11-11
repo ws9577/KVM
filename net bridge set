@@ -18,9 +18,19 @@ network:
         stp: true  # Enable STP to avoid network loops.
         forward-delay: 4
 
+------------------------------------
+start network-manager
+or
+systemctl start NetworkManager
+systemctl enable NetworkManager
+
+netplan try  # 2 minutes try
+netplan apply
 
 sudo virsh net-destroy default   # This stops the network
 sudo virsh net-autostart --disable default   # This prevents it from starting at boot
+
+--------------------------------------------
 
 sudo virsh edit <vm-name>
 # Modify the network interface section .xml to look like this:
