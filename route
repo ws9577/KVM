@@ -28,6 +28,26 @@ network:
         "Wang's_5G":
           password: "062890940"
 
+-------------------------------------
+# router w/ DHCP
+# ubuntu
+network:
+  version: 2
+  renderer: networkd  
+  ethernets:
+    enp1s0:
+      dhcp4: yes
+
+
+# Alpine VM (/etc/network/interfaces):
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+
+-------------------------
+# static IPs
 # ubuntu netplan 
 network:
   version: 2
