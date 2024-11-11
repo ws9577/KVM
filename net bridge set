@@ -19,6 +19,42 @@ network:
         forward-delay: 4
 
 ------------------------------------
+# opt 2, Using separate interfaces (more complex but explicit):
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp4s0:
+      dhcp4: false
+      addresses:
+        - 192.168.0.110/24  # Host IP
+      routes:
+        - to: default
+          via: 192.168.0.1
+          metric: 50
+  bridges:
+    br0:
+      interfaces: []  # Empty because we'll attach VMs directly
+      addresses:
+        - 192.168.0.111/24  # Bridge IP for VMs
+      nameservers:
+        addresses: [192.168.0.1]
+      parameters:
+        stp: true
+        forward-delay: 4
+
+----------------------------
+# Using source routing (simpler but requires additional setup):
+# Add specific source routing rules
+sudo ip rule add from 192.168.0.110 lookup 100
+sudo ip rule add from 192.168.0.111 lookup 101
+
+# Create routing tables
+sudo ip route add default via 192.168.0.1 table 100
+sudo ip route add default via 192.168.0.1 table 101
+
+
+-------------------------
 start network-manager
 or
 systemctl start NetworkManager
