@@ -1,0 +1,16 @@
+127.0.0.1 localhost
+127.0.1.1 smurf
+#local servers
+192.168.0.102 ubupi
+#192.168.0.103
+192.168.0.104 alprox1
+192.168.0.130 bonbon.win ubapbb1
+192.168.0.131 ubapbb2
+#192.168.0.132 ubapbb2
+192.168.0.140 med.bonbon.win alngmed1
+192.168.0.150 ubdev1
+192.168.0.160 kali
+192.168.0.180 almar1
+192.168.0.200 ubbk1
+192.168.0.201 ubbk2
+
