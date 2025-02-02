@@ -1,0 +1,43 @@
+for i in `virsh list --all|awk '{print $2}'|grep -v Name`; do virsh start $i; done
+
+# The command breaks down like this:
+virsh list --all
+
+# Shows all of the virtual machines, whether they are on or not.
+awk '{print $2}'|grep -v Name
+
+# We are taking out the unneeded columns and only printing the column with the virtual machine names. Then we take out the header row with grep since it isn't actually a virtual machine.
+virsh start $i
+
+# Turns on the virtual machine.
+
+# opt 2 (auto start)
+for i in $(virsh list --name --autostart --inactive); do virsh start "$i"; done
+
+
+# opt 3
+virsh list --all --name | xargs -n1 virsh start
+
+
+----------------------------------------------------------------
+# This script requires the xml2 utility (in package xml2 in debian and probably ubuntu too). 
+
+#! /bin/bash
+
+xmlfiles=( $(find /etc/libvirt/qemu/autostart/ -name '*.xml') )
+
+for f in "${xmlfiles[@]}" ; do
+  domain=$(xml2 < $f | awk -F= '$1 == "/domain/name" {print $2}')
+
+  # only start domain if it's not already running
+  if ! virsh list | grep -q " ${domain} .*running" ; then
+    virsh start "$domain"
+  #else
+    # optionally reboot domain otherwise
+    #virsh reboot "$domain"
+  fi
+
+done
+
+# It uses xml2 to extract the domain name(s) from all XML files in libvirt's qemu autostart directory, and runs virsh start on them if they're not already running.
+# Save it somewhere in your PATH, as something like virsh-autostart.sh (or whatever makes sense to you) and make it executable with chmod.
